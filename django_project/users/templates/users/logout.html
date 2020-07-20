@@ -1,0 +1,18 @@
+{% extends "karioker/base.html" %}
+
+{% block content %}
+	<div class="border-bottom pt-23"> 
+		<h2 > GoodBy!</h2>
+	</div>
+	<div class="border-top pt-3"> 
+		<iframe  width="560" height="315" src="https://www.youtube-nocookie.com/embed/d0f6Vu5PKrM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+	<div class="border-top pt-3"> 
+		<small class="text-muted"> 
+			want to rejoin the party?  <a class="ml-2" href="{% url 'login' %}">Login Agin</a>
+		</small>
+	</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends "karioker/base.html" %}
+{% block content %}
+<h3 class=mb-3> songs performed by {{  view.kwargs.performer_name  }}         ( {{songs.count}} ) </h3>
+    {% for song in songs %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-4" href="{% url 'performer-songs' song.performer %}">{{ song.performer }}</a>
+              <small class="text-muted"> 
+              		lyrics by: <a class="mr-4", href="#"> {{ song.songwriter }}</a>
+              		music by:  <a class="mr-4", href="#"> {{ song.composer }}</a>
+                  <a class="ml-4", href="{% url 'song-chords' song.id %}" >  chords </a>
+                  {% if user.is_staff %}
+                    <a class="ml-4", href="{% url 'song-update' song.id %}" >  edit </a>
+                    <a class="ml-4", href="{% url 'song-delete' song.id %}" >  delete </a>
+                  {% endif %}
+              </small>
+            </div>
+            <h2><a class="article-title" href="{% url 'song-detail' song.id %}">{{ song.name }}</a></h2>
+            <p class="article-content">{{ song.lyrics|truncatechars:150 }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">first</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      {% for page_num in page_obj.paginator.page_range %}
+        {% if page_obj.number == page_num  %}
+          <a align="center" class="btn btn-info mb-4" href="?page={{ page_num }}">{{page_num}}</a>
+        {% elif page_obj.number > page_num|add:'-3' and page_obj.number < page_num|add:'+3' %}
+          <a align="center" class="btn btn-outline-info mb-4 " href="?page={{ page_num }}">{{page_num}}</a>          
+        {% endif %}
+      {% endfor %}
+        {% if page_obj.has_next%}
+          <a class="btn btn-outline-info mr-1 mb-4 float-right" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+          <a class="btn btn-outline-info mb-4 float-right" href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    {% endif %}. <!-- is_paginated -->
+{% endblock content %}
+
+

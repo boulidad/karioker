@@ -1,0 +1,33 @@
+{% extends "karioker/base.html" %}
+{% block content %}
+    {% for event in events %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'event-detail' event.id %}">{{ event.name }}</a></h2>
+            <p class="article-content">{{ song.lyrics|truncatechars:150 }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">first</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      {% for page_num in page_obj.paginator.page_range %}
+        {% if page_obj.number == page_num  %}
+          <a align="center" class="btn btn-info mb-4" href="?page={{ page_num }}">{{page_num}}</a>
+        {% elif page_obj.number > page_num|add:'-3' and page_obj.number < page_num|add:'+3' %}
+          <a align="center" class="btn btn-outline-info mb-4 " href="?page={{ page_num }}">{{page_num}}</a>          
+        {% endif %}
+      {% endfor %}
+        {% if page_obj.has_next%}
+          <a class="btn btn-outline-info mr-1 mb-4 float-right" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+          <a class="btn btn-outline-info mb-4 float-right" href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    {% endif %}. <!-- is_paginated -->
+
+
+
+{% endblock content %}
