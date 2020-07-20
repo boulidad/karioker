@@ -99,6 +99,22 @@ def event_add_song(request,event_id,song_id):
 
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
+@login_required
+def event_delete_song(request,event_song_id):
+    event_song = get_object_or_404(EventSongs, id=event_song_id)
+    event_id=event_song.singer.event.id
+    event_song.delete()
+
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
+#class EventDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+#    model = Event
+#    success_url = '/event/'
+#    def test_func(self):
+#        event = self.get_object()
+#        if self.request.user == event.orgenizer:
+#            return True
+#        return False
 
 
 class EventCreateView(LoginRequiredMixin,CreateView):
