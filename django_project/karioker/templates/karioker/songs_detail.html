@@ -3,7 +3,7 @@
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-4" href="#">{{ object.performer }}</a>
+        <a class="mr-4" href="{% url 'performer-songs' object.performer %}">{{ object.performer }}</a>
         <small class="text-muted">  
             lyrics by: <a class="mr-3", href="#"> {{ object.songwriter }}</a> 
             music by:  <a class="mr-3", href="#"> {{ object.composer }}</a>
