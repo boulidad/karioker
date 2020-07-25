@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<body>
-
+{% extends "karioker/base.html" %}
+{% block content %}
 <h2>The method Attribute</h2>
 
-<p>This form will be submitted using the POST method:</p>
+<p>put a url of a song from the relevant site here to scrape the site and add the song to our long list</p>
 
-<form action="" target="_blank" method="post">
+<form  method="post">
 	{% csrf_token %}
   <label for="fname">tab4u url to scrape:</label><br>
   <input type="text" id="fname" name="fname" value=""><br>
   <input type="submit" value="Scrape">
 </form>
 
-<p>After you submit, notice that, unlike the GET method, the form values is NOT visible in the address bar of the new browser tab.</p>
-
-</body>
-</html>
+{% endblock content %}
