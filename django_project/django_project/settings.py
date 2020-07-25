@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'karioker.apps.KariokerConfig',
+    'crawler.apps.CrawlerConfig',
     'users.apps.UsersConfig',
     'event.apps.EventConfig',
     'django.contrib.admin',

@@ -38,6 +38,8 @@ def scrape_lyrics_tab4u(the_url):
     origin_url_to_keep=int(the_url.index('/')-num_steps_back)-1
     chords_url='/'.join(the_url.split('/')[:origin_url_to_keep])+'/'+clean_href
     song_dict={
+    	'language': 'hebrew',
+    	'align':'right',
         'song_writer' : song_writer,
         'composer' : composer,
         'performer' : performer,
@@ -78,6 +80,8 @@ def scrape_chorld_tab4u(the_url):
     origin_url_to_keep=int(the_url.index('/')-num_steps_back)-1
     lyrics_url='/'.join(the_url.split('/')[:origin_url_to_keep])+'/'+clean_href
     song_dict={
+    	'language': 'hebrew',
+    	'align':'right',
         'song_writer' : song_writer,
         'composer' : composer,
         'performer' : performer,
@@ -88,6 +92,9 @@ def scrape_chorld_tab4u(the_url):
 
 def get_data_for_one_url(the_url):
     url_types={
+		# url_type format
+		# for lyrics tipe url - url_standard:[site,url_type,lyrics_scrape_function,chords_script_function]
+		# for chords tipe url - url_standard:[site,url_type,chords_scrape_function,lyrics_script_function]
         'https://www.tab4u.com/lyrics/songs/':['tab4u','lyrics','scrape_lyrics_tab4u','scrape_chorld_tab4u'],
         'https://www.tab4u.com/tabs/songs/':['tab4u','chords','scrape_chorld_tab4u','scrape_lyrics_tab4u']
     }
@@ -95,7 +102,6 @@ def get_data_for_one_url(the_url):
        if utk==the_url[:len(utk)]:
           utl_site=url_types[utk][0]
           url_type=url_types[utk][1]
-          print(url_type)
           if url_type=='lyrics':
             url_lyrics_function=eval(url_types[utk][2])
             url_chorld_function=eval(url_types[utk][3])
@@ -109,16 +115,16 @@ def get_data_for_one_url(the_url):
             chords_dict=url_chorld_function(the_url)
             lyrics_dict=url_lyrics_function(chords_dict['lyrics_url'])
     try:
-    	return {'lyrics_dict':lyrics_dict,'chords_dict':chords_dict}
+    	lyrics_dict.update(chords_dict)
+    	return lyrics_dict
     except UnboundLocalError:
     	raise ScapingWrongUrlType({"message":'"'+the_url+'" is not a supported url type for scraping'})
 
 
-# url_type format
-# for lyrics tipe url - url_standard:[site,url_type,lyrics_scrape_function,chords_script_function]
-# for chords tipe url - url_standard:[site,url_type,chords_scrape_function,lyrics_script_function]
-
 url_types={
+	# url_type format
+	# for lyrics tipe url - url_standard:[site,url_type,lyrics_scrape_function,chords_script_function]
+	# for chords tipe url - url_standard:[site,url_type,chords_scrape_function,lyrics_script_function]
     'https://www.tab4u.com/lyrics/songs/':['tab4u','lyrics','scrape_lyrics_tab4u','scrape_chorld_tab4u'],
     'https://www.tab4u.com/tabs/songs/':['tab4u','chords','scrape_chorld_tab4u','scrape_lyrics_tab4u']
     }
