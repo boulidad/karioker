@@ -16,6 +16,10 @@ urlpatterns = [
     path('<int:event_id>/join/<str:token>', join_event,  name='event-join'),
     path('<int:event_id>/add_song/<int:song_id>/', event_add_song,  name='event-add-song'),
     path('event_song_delete/<int:event_song_id>/', event_delete_song,  name='event-delete-song'),
+    path('<int:event_id>/start_event/', start_event,  name='event-start'),
+    path('<int:event_id>/end_event/', end_event,  name='event-end'),
+    path('<int:event_id>/cancel_event/', cancel_event,  name='event-cancel'),
+    path('<int:event_id>/reset_event/', reset_event,  name='event-reset'),
 
 ]
 

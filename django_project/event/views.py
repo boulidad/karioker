@@ -13,11 +13,10 @@ from django.contrib import messages
 class EventListView(ListView):
     model = Event
     context_object_name = 'events'
-    paginate_by=500
+    paginate_by=20
 
 class EventDetailView(DetailView):
     model = Event
-
 
 
 class EventSongsListView(ListView):
@@ -107,14 +106,35 @@ def event_delete_song(request,event_song_id):
 
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
-#class EventDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
-#    model = Event
-#    success_url = '/event/'
-#    def test_func(self):
-#        event = self.get_object()
-#        if self.request.user == event.orgenizer:
-#            return True
-#        return False
+@login_required
+def start_event(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    event.event_status = EventStatus.ACTIVE
+    event.save()
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
+@login_required
+def cancel_event(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    event.event_status = EventStatus.CANCELED
+    event.save()
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
+@login_required
+def end_event(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    event.event_status = EventStatus.AFTER
+    print("ending the event")
+    event.save()
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
+@login_required
+def reset_event(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    event.event_status = EventStatus.BEFORE
+    event.save()
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
 
 
 class EventCreateView(LoginRequiredMixin,CreateView):
@@ -144,47 +164,4 @@ class EventUpdateView(UserPassesTestMixin,UpdateView):
         if self.request.user == event.orgenizer:
             return True
         return False
-
-
-
-
-
-
-
-#class EventDetailView(DetailView):
-
-#class EventDetailViewWithMore(View):
-#    model = Event
-
-#    def get_queryset(self):
-#        event_guests = get_object_or_404(EventGuests, event=self.kwargs.get('pk'))
-#        event_songs = get_object_or_404(EventSongs , event=self.kwargs.get('pk'))
-#        return self
-
-
-
-
-#def EventDetailViewWithMore(request, pk):
-#    context = {
-#        'event' : get_object_or_404(Event, event=self.request.pk),
-
-#    }
-#    return render(request,'event/event_detailed.html',context)
-
-#def EventDetailViewWithMore(request):
- #   print(request)
- #   context = {
-#        'event' : get_object_or_404(Event, event=self.request.pk),
-#        'event_guests' : get_object_or_404(EventGuests, event=self.request.pk),
-#        'event_songs' : get_object_or_404(EventSongs , event=self.request.pk)
-
-#    }
-#    return render(request,'karioker/event_detailed.html',context)
-
-
-
-
-#    def get_queryset(self):
-#        user = get_object_or_404(User, username=self.kwargs.get('username'))
-#        return Post.objects.filter(author=user).order_by('-date_posted')
 

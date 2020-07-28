@@ -6,23 +6,46 @@
 
 
   <article class="media content-section">
-    <div class="media-body">
+    {% if  event.event_status == 'CANCELED' %}
+      <div class="media-body" style="background-color:darkred">
+    {%elif event.event_status == 'ACTIVE' %}
+      <div class="media-body" style="background-color:green">
+    {%elif event.event_status == 'AFTER' %}
+      <div class="media-body" style="background-color:gray">
+    {% else %}
+      <div class="media-body">
+    {%endif %}
       <div class="article-metadata">
       </div>
 
-      <div class="article-metadata">
+      <div class="article-metadata"  >
         <a class="mr-4" href="#">{{ object.performer }}</a>
         <small class="text-muted">  
             {% if user.is_staff %}
               <a class="ml-4", href="{%url 'event-update' event.id %}">  edit </a>
               <a class="ml-4", href="{%url 'event-delete' event.id %}" >  delete </a>
-              <a class="ml-4", href="{%url 'event-join' event.id event_invitation_token%}" >  join </a>
+              {% if  event.event_status == 'BEFORE'  or   event.event_status == 'ACTIVE' %}
+                <a class="ml-4", href="{%url 'event-join' event.id event_invitation_token%}" >  join </a>
+              {% endif  %}
+
             {% endif  %}
               <a class="ml-4", href="{%url 'karioker-songs' %}?event_id={{event.id}}" >  pick a song </a>
+            {%if event.event_status == 'BEFORE' %}
+              <a class="mr-5 float-right"", href="{%url 'event-start' event.id %}"  >  Start Event </a> 
+              <a class="mr-5 float-right"", href="{%url 'event-cancel' event.id %}"  >  cancel Event </a> 
+            {% elif  event.event_status == 'ACTIVE' %}
+              <a class="mr-5 float-right"", href="{%url 'event-end' event.id %}"  >  End Event </a> 
+            {% elif  event.event_status == 'AFTER' %}
+              <a class="mr-5 float-right"", href="{%url 'event-start' event.id %}"  >  Reopen Event </a> 
+              <a class="mr-5 float-right"", href="{%url 'event-reset' event.id %}"  >  reset Event </a> 
+            {% elif  event.event_status == 'CANCELED' %}
+              <a class="mr-5 float-right"", href="{%url 'event-reset' event.id %}"  >  reset Event </a> 
+            {% endif  %}
         </small>
       </div>      
-      <h2>{{ event}}</h2>
-        {{event.event_status}}
+      <h2>{{ event}} - {{event.event_status}}</h2>
+                    {% if  event.event_status == 'BEFORE'  or   event.event_status == 'ACTIVE' %}
+
         to invite to the event, press copy and send the link to your fiends:   
         <button onclick="copy('Lorem ipsum dolor sit amet\nconsectetur adipiscing elit')">
             Copy Invitation
@@ -39,6 +62,7 @@
 
           }
         </script>
+            {% endif  %}
 
 
     </div>

@@ -7,13 +7,11 @@ from django.shortcuts import  get_object_or_404
 
 
 
-#class EventStatus(models.IntegerChoices):
-#    ACTIVE = 0, 'Active'
-#    AFTER = 1, 'After'
-#    BEFORE = 2, 'Before'
-#    CANCELED = 3, Canceled
-
-
+class EventStatus(models.TextChoices):
+    ACTIVE = 'ACTIVE', 'Active'
+    AFTER = 'AFTER', 'After'
+    BEFORE = 'BEFORE', 'Before'
+    CANCELED = 'CANCELED', 'Canceled'
 
 # then in your code
 #thing = get_my_thing()
@@ -25,7 +23,7 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     orgenizer = models.ForeignKey(User, on_delete=models.CASCADE)
     current_song = models.IntegerField(default=-1, blank=True)
-    #event_status = models.IntegerField(default=EventStatus.BEFORE, choices=EventStatus.choices)
+    event_status = models.TextField(default=EventStatus.BEFORE, choices=EventStatus.choices)
 
 
 
