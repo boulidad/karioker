@@ -11,8 +11,11 @@
               <a class="mr-4" href="{% url 'song-detail' object.id %}">lyrics</a>
         </small>
       </div>
+            <div align="{{object.alignment}}">
       <h2 class="mr-4" href="{% url 'song-detail' object.id %}">{{ object.name }}</h2>
       <p class="article-content">{{ object.chords}}</p>
+      </div>
+      
     </div>
   </article>
 {% endblock content %}

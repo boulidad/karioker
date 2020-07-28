@@ -2,7 +2,7 @@
 {% block content %}
   <article class="media content-section">
     <div class="media-body">
-      <div class="article-metadata">
+      <div class="article-metadata" >
         <a class="mr-4" href="{% url 'performer-songs' object.performer %}">{{ object.performer }}</a>
         <small class="text-muted">  
             lyrics by: <a class="mr-3", href="#"> {{ object.songwriter }}</a> 
@@ -17,8 +17,10 @@
             {% endif  %}
         </small>
       </div>
+      <div align="{{object.alignment}}">
       <h2>{{ object.name }}</h2>
       <p class="article-content">{{ object.lyrics}}</p>
+      </div>
     </div>
   </article>
 {% endblock content %}

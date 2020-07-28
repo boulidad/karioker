@@ -18,12 +18,14 @@
                   {% endif  %}                  
               </small>
             </div>
+            <div align="{{song.alignment}}">
               {% if in_event %}
                   <h2><a class="article-title" href="{% url 'song-detail' song.id %}?event_id={{event.id}}">{{ song.name }}</a></h2>
               {% else %}
                   <h2><a class="article-title" href="{% url 'song-detail' song.id %}">{{ song.name }}</a></h2>              
               {% endif  %}                  
             <p class="article-content">{{ song.lyrics|truncatechars:150 }}</p>
+            </div>
           </div>
         </article>
     {% endfor %}

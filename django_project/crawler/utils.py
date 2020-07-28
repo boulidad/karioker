@@ -31,15 +31,15 @@ def scrape_lyrics_tab4u(the_url):
                elif (i.split(':')[0].strip()) == 'מלחין':
                    composer = i.split(':')[1].strip()
                    print(composer)
-    lyrics=song.find('div', id="songContentTPL").text.replace('\n\n','\n').replace('\n\n\n','\n\n')
+    lyrics=song.find('div', id="songContentTPL").text.replace('\n\n','\n').replace('\n\n','\n').replace('\n\n\n','\n\n')
     href=song.find('div', class_="lItem woItem").find('a').get('href')
     clean_href=href.replace('../','')
     num_steps_back=(len(href)-len(clean_href))/3
     origin_url_to_keep=int(the_url.index('/')-num_steps_back)-1
     chords_url='/'.join(the_url.split('/')[:origin_url_to_keep])+'/'+clean_href
     song_dict={
-    	'language': 'hebrew',
-    	'align':'right',
+      	'language': 'Hebrew',
+      	'alignment':'right',
         'song_writer' : song_writer,
         'composer' : composer,
         'performer' : performer,
@@ -73,15 +73,15 @@ def scrape_chorld_tab4u(the_url):
                elif (i.split(':')[0].strip()) == 'מלחין':
                    composer = i.split(':')[1].strip()
                    print(composer)
-    song_chords=song.find('div', id="songContentTPL").text.replace('\n\n','\n').replace('\n\n\n','\n\n')
+    song_chords=song.find('div', id="songContentTPL").text.replace('\n\n','\n').replace('\n\n','\n').replace('\n\n\n','\n\n')
     href=song.find_all('div', class_="lItem npt cIS1")[1].find_all('a')[2].get('href')
     clean_href=href.replace('../','')
     num_steps_back=(len(href)-len(clean_href))/3
     origin_url_to_keep=int(the_url.index('/')-num_steps_back)-1
     lyrics_url='/'.join(the_url.split('/')[:origin_url_to_keep])+'/'+clean_href
     song_dict={
-    	'language': 'hebrew',
-    	'align':'right',
+        'language': 'Hebrew',
+        'alignment':'right',
         'song_writer' : song_writer,
         'composer' : composer,
         'performer' : performer,

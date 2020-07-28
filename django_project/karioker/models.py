@@ -30,6 +30,9 @@ class Songs(models.Model):
     chords_url = models.CharField(max_length=400)
     lyrics = models.TextField()
     chords = models.TextField()
+    language = models.CharField(max_length=400) 
+    alignment = models.CharField(max_length=400) 
+
 
     def __str__(self):
         return self.name
@@ -86,8 +89,11 @@ def get_create_song(song_dict):
             lyrics_url=song_dict['lyrics_url'],
             chords_url=song_dict['chords_url'],
             lyrics=song_dict['lyrics'],
-            chords=song_dict['chords']
+            chords=song_dict['chords'],
+            alignment=song_dict['alignment'],
+            language=song_dict['language']
             )
+
         song.save()
         return {'song':song,'status':'new_song_created'}
 
