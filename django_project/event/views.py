@@ -110,6 +110,10 @@ def event_delete_song(request,event_song_id):
 def start_event(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.ACTIVE
+    event.current_song = 1
+    #next_id = User.objects.order_by('-id').first().id + 1
+    #next_id = EventSongs.objects.filter(event=event_id).order_by('id').first().id
+
     event.save()
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
@@ -117,6 +121,7 @@ def start_event(request,event_id):
 def cancel_event(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.CANCELED
+    event.current_song = -1
     event.save()
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
@@ -124,12 +129,20 @@ def cancel_event(request,event_id):
 def end_event(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.AFTER
-    print("ending the event")
+    event.current_song = -1
     event.save()
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
 @login_required
 def reset_event(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    event.event_status = EventStatus.BEFORE
+    event.current_song = -1
+    event.save()
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+
+@login_required
+def event_next_song(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.BEFORE
     event.save()

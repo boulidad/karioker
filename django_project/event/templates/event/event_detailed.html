@@ -97,12 +97,20 @@
 
 
     {% for song in event_song_list %}
+            {%if event.current_song == song.id %}
+      <div  style="background-color:green">
+      {%else    %}
+    <div >
+                {% endif %}
+        {{song.id}}. {{event.current_song}}
+
           <li class="list-group-item list-group-item-light">
                 <a class="ml-1" href="{% url 'song-detail' song.song.id %}">{{ song.song }}</a> by {{ song.singer.guest}}
                     {%  if song.singer.guest.id == user.id or   user.is_staff %}
                 <a class="btn btn-outline-info mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">delete </a>  
                 {% endif %}
           </li>
+        <div>
     {% endfor %}
 
 
