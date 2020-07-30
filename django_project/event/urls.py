@@ -20,6 +20,7 @@ urlpatterns = [
     path('<int:event_id>/end_event/', end_event,  name='event-end'),
     path('<int:event_id>/cancel_event/', cancel_event,  name='event-cancel'),
     path('<int:event_id>/reset_event/', reset_event,  name='event-reset'),
+    path('<int:event_id>/next_song/', event_next_song,  name='event-next-song'),
 
 ]
 
