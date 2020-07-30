@@ -6,15 +6,8 @@
 
 
   <article class="media content-section">
-    {% if  event.event_status == 'CANCELED' %}
-      <div class="media-body" style="background-color:darkred">
-    {%elif event.event_status == 'ACTIVE' %}
-      <div class="media-body" style="background-color:green">
-    {%elif event.event_status == 'AFTER' %}
-      <div class="media-body" style="background-color:gray">
-    {% else %}
       <div class="media-body">
-    {%endif %}
+
       <div class="article-metadata">
       </div>
 
@@ -42,7 +35,20 @@
               <a class="mr-5 float-right"", href="{%url 'event-reset' event.id %}"  >  reset Event </a> 
             {% endif  %}
         </small>
-      </div>      
+      </div> 
+      {% if  event.event_status == 'CANCELED' %}
+      <div style="background-color:darkred">
+    {%elif event.event_status == 'ACTIVE' %}
+      <div style="background-color:green">
+    {%elif event.event_status == 'AFTER' %}
+      <div  style="background-color:gray">
+    {% else %}
+      <div class="media-body">
+    {%endif %}
+            &nbsp;
+
+      </div>
+
       <h2>{{ event}} - {{event.event_status}}</h2>
                     {% if  event.event_status == 'BEFORE'  or   event.event_status == 'ACTIVE' %}
 
@@ -66,10 +72,6 @@
 
 
     </div>
-  <div> 
-
-
-  </div>  
   </article>
   
  <div class="row">
@@ -97,16 +99,18 @@
 
 
     {% for song in event_song_list %}
-            {%if event.current_song == song.id %}
+            {%if song.status == 'CURRENT' %}
       <div  style="background-color:green">
+            {%elif song.status == 'LISTED' %}
+      <div  style="background-color:white">
       {%else    %}
-    <div >
-                {% endif %}
-        {{song.id}}. {{event.current_song}}
+    <div style="background-color:white" >
+              {% endif %}
+        &nbsp;
 
           <li class="list-group-item list-group-item-light">
                 <a class="ml-1" href="{% url 'song-detail' song.song.id %}">{{ song.song }}</a> by {{ song.singer.guest}}
-                    {%  if song.singer.guest.id == user.id or   user.is_staff %}
+                    {%  if song.singer.guest.id == user.id or   user.is_staff  or  song.status != 'CURRENT' %}
                 <a class="btn btn-outline-info mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">delete </a>  
                 {% endif %}
           </li>

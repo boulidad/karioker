@@ -92,7 +92,7 @@ def event_add_song(request,event_id,song_id):
     print(f'the event object={event}')
     event_guest = get_object_or_404(EventGuests,event=event,guest=request.user.id)
     print(f'event_guest={event_guest}')
-    event_guest_song = EventSongs(singer=event_guest,song=song)
+    event_guest_song = EventSongs(singer=event_guest,song=song, event=event)
 
     event_guest_song.save()
 
@@ -110,11 +110,15 @@ def event_delete_song(request,event_song_id):
 def start_event(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.ACTIVE
-    event.current_song = 1
+    event.current_song = EventSongs.objects.filter(event=event_id).order_by('id').first().id
+    event_song=EventSongs.objects.get(id=event.current_song)
+    event_song.status='CURRENT'
+
     #next_id = User.objects.order_by('-id').first().id + 1
     #next_id = EventSongs.objects.filter(event=event_id).order_by('id').first().id
 
     event.save()
+    event_song.save()
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
 @login_required
@@ -130,6 +134,11 @@ def end_event(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     event.event_status = EventStatus.AFTER
     event.current_song = -1
+    for song in EventSongs.objects.filter(event=event_id):
+        song.status='LISTED'
+        song.save()
+
+
     event.save()
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 

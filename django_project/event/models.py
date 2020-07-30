@@ -17,6 +17,11 @@ class EventStatus(models.TextChoices):
 #thing = get_my_thing()
 #thing.priority = ThingPriority.HIGH
 
+class EventSongStatus(models.TextChoices):
+    SANG = 'SANG', 'Sang'
+    CURRENT = 'CURRENT', 'Current'
+    LISTED = 'LISTED', 'Listed'
+
 
 class Event(models.Model):
 
@@ -55,8 +60,10 @@ class EventGuests(models.Model):
         return f'{self.guest.username}@{self.event.name}'
 
 class EventSongs(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     singer = models.ForeignKey(EventGuests, on_delete=models.CASCADE)
     song = models.ForeignKey(Songs, on_delete=models.CASCADE)
+    status = models.TextField(default=EventSongStatus.LISTED, choices=EventStatus.choices)
     def __str__(self):
         return f'{self.song} by {self.singer}'
 
