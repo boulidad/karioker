@@ -193,3 +193,19 @@ class EventUpdateView(UserPassesTestMixin,UpdateView):
             return True
         return False
 
+@login_required
+def event_current_song(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    current_song=EventSongs.objects.get(id=event.current_song)
+    context = {'event': event,"song" :current_song}
+    return render(request, 'event/current_song.html', context)
+
+
+
+@login_required
+def event_current_song_chords(request,event_id):
+    event = get_object_or_404(Event, id=event_id)
+    current_song=EventSongs.objects.get(id=event.current_song)
+    context = {'event': event,"song" :current_song}
+    return render(request, 'event/current_song_chords.html', context)
+

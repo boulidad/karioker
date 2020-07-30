@@ -1,0 +1,15 @@
+{% extends "karioker/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata" >
+      <div align="{{song.alignment}}">
+      <h2>{{ song.song.name }}</h2>
+      <p class="article-content">{{ song.song.chords}}</p>
+      </div>
+    </div>
+  </article>
+{% endblock content %}
+
+
+
