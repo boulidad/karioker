@@ -17,11 +17,13 @@
             <a class="mr-5 float-right"", href="{%url 'event-start' event.id %}"  >  Start Event </a> 
             <a class="mr-5 float-right"", href="{%url 'event-cancel' event.id %}"  >  cancel Event </a> 
           {% elif  event.event_status == 'ACTIVE' %}
-            <a class="mr-5 float-right"", href="{%url 'event-end' event.id %}"  >  End Event </a> 
+            <button class="mr-3 float-right"  onclick="window.location.href='{%url 'event-end' event.id %}'">  End Event  </button> 
             <button class="mr-3 float-right"  onclick="window.location.href='{%url 'event-next-song' event.id %}'">  next song  </button> 
+            <a class="mr-5 float-right"", href="{%url 'event-current-song' event.id %}"  >  current song </a> 
+            <a class="mr-5 float-right"", href="{%url 'event-current-song-chords' event.id %}"  >  current song chords </a> 
           {% elif  event.event_status == 'AFTER' %}
-            <a class="mr-5 float-right"", href="{%url 'event-start' event.id %}"  >  Reopen Event </a> 
-            <a class="mr-5 float-right"", href="{%url 'event-reset' event.id %}"  >  reset Event </a> 
+            <button class="mr-3 float-right"  onclick="window.location.href='{%url 'event-start' event.id %}'">  Reopen Event  </button> 
+            <button class="mr-3 float-right"  onclick="window.location.href='{%url 'event-reset' event.id %}'">  reset Event  </button> 
           {% elif  event.event_status == 'CANCELED' %}
             <a class="mr-5 float-right"", href="{%url 'event-reset' event.id %}"  >  reset Event </a> 
           {% endif  %}
@@ -84,14 +86,23 @@
                 <div  style="background-color:green">
                   {%elif song.status == 'LISTED' %}
                 <div  style="background-color:white">
+                  {%elif song.status == 'SANG' %}
+                <div  style="background-color:gray">
               {%else%}
                 <div style="background-color:white" >
               {% endif %}
-              &nbsp;
-              <li class="list-group-item list-group-item-light">
-                <a class="btn ml-1" href="{% url 'song-detail' song.song.id %}">{{ song.song }}</a> by {{ song.singer.guest}}
-                {%  if song.singer.guest.id == user.id or   user.is_staff  and  song.status == 'LISTED' %}
-                  <a class="btn btn-outline-info mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">delete </a>  
+              {%  if song.status == 'SANG' %}
+                <li class="btn btn-secondary list-group-item disabled">
+                  <a class="btn  " align="" href="{% url 'song-detail' song.song.id %}"> {{ song.song }} by {{ song.singer.guest}} </a> 
+              {%  elif  song.status == 'LISTED'  %}
+                <li class="btn btn-outline-dark list-group-item list-group-item-light">
+                    <a class="btn  " align="" href="{% url 'song-detail' song.song.id %}"> {{ song.song }} by {{ song.singer.guest}} </a> 
+                  {%  if song.singer.guest.id == user.id or user.is_staff %}
+                  <a class="btn btn-outline-info mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">delete </a>
+                  {% endif%}
+              {%else%}
+                <li class="btn btn-outline-dark list-group-item list-group-item-primary">
+                  <a class="btn  " align="" href="{% url 'song-detail' song.song.id %}"> {{ song.song }} by {{ song.singer.guest}} </a> 
                 {% endif %}
               </li>
             <div>

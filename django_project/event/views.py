@@ -34,8 +34,7 @@ def event_with_details(request,pk):
     event_invitation_token=event.get_invite_token()
     guest_list = EventGuests.objects.filter(event=event.id)
     event_song_list = EventSongs.objects.none()
-    for singer in guest_list:
-        event_song_list |= EventSongs.objects.filter(singer=singer)
+    event_song_list |= EventSongs.objects.filter(event=event.id).order_by('id')
 
     context = {'event': event, 'guest_list': guest_list,"event_song_list" :event_song_list, 'event_invitation_token':event_invitation_token}
     return render(request, 'event/event_detailed.html', context)
