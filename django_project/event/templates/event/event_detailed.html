@@ -61,7 +61,7 @@
     </div>
   </article>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="content-section">
         <h3>Guest List</h3>
         <p class='text-muted'>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-9">
       <div class="content-section">
         <h3>Song List</h3>
         <p class='text-muted'>
@@ -98,7 +98,8 @@
                 <li class="btn btn-outline-dark list-group-item list-group-item-light">
                     <a class="btn  " align="" href="{% url 'song-detail' song.song.id %}"> {{ song.song }} by {{ song.singer.guest}} </a> 
                   {%  if song.singer.guest.id == user.id or user.is_staff %}
-                  <a class="btn btn-outline-info mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">delete </a>
+                  <a class="btn btn-outline-danger mr-1 float-right" href="{% url 'event-delete-song' song.id %}  ">Remove </a>
+                  <a class="btn btn-outline-primary mr-2 float-right" href="{% url 'event-jump-to-song' event.id song.id %}  ">JumpTo </a>
                   {% endif%}
               {%else%}
                 <li class="btn btn-outline-dark list-group-item list-group-item-primary">

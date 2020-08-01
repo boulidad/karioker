@@ -21,9 +21,9 @@ urlpatterns = [
     path('<int:event_id>/cancel_event/', cancel_event,  name='event-cancel'),
     path('<int:event_id>/reset_event/', reset_event,  name='event-reset'),
     path('<int:event_id>/next_song/', event_next_song,  name='event-next-song'),
+    path('<int:event_id>/jump_to_song/<int:event_song_id>', event_jump_to_song,  name='event-jump-to-song'),
     path('<int:event_id>/current_song/', event_current_song,  name='event-current-song'),
     path('<int:event_id>/current_song_chords/', event_current_song_chords,  name='event-current-song-chords'),
-
 ]
 
 

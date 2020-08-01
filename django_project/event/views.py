@@ -154,14 +154,35 @@ def event_next_song(request,event_id):
     event = get_object_or_404(Event, id=event_id)
     current_song=EventSongs.objects.get(id=event.current_song)
     current_song.status='SANG'
-    event.current_song = EventSongs.objects.filter(event=event_id,status='LISTED').order_by('id').first().id
-    event_song=EventSongs.objects.get(id=event.current_song)
-    event_song.status='CURRENT'
     current_song.save()
-    event_song.save()
-    event.save()
+    try:
+        event.current_song = EventSongs.objects.filter(event=event_id,status='LISTED').order_by('id').first().id
+        event_song=EventSongs.objects.get(id=event.current_song)
+        event_song.status='CURRENT'
+        current_song.save()
+        event_song.save()
+        event.save()
+        return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+    except AttributeError:  # this means that cant get any more songs from the DB, except might be too wide, may need to refactor
+        messages.info(request,f'this was the last song     :-(')
     return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
+@login_required
+def event_jump_to_song(request,event_id,event_song_id):
+    event = get_object_or_404(Event, id=event_id)
+    current_song=EventSongs.objects.get(id=event.current_song)
+    current_song.status='SANG'
+    current_song.save()
+    try:
+        event_song=get_object_or_404(EventSongs, id=event_song_id)
+        event.current_song = event_song.id
+        event_song.status='CURRENT'
+        event_song.save()
+        event.save()
+        return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
+    except AttributeError:  # this means that cant get any more songs from the DB, except might be too wide, may need to refactor
+        messages.info(request,f'this was the last song     :-(')
+    return redirect(reverse('event-detail', kwargs={'pk': event_id}))#, event_id=event_id)
 
 
 class EventCreateView(LoginRequiredMixin,CreateView):
